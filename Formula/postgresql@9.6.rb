@@ -41,7 +41,7 @@ class PostgresqlAT96 < Formula
 
     # Homebrew's libxml2 >= 2.13 changed xmlStructuredErrorFunc to use const xmlError*.
     # macOS system libxml2 still uses the old non-const signature.
-    if !OS.mac?
+    unless OS.mac?
       inreplace "src/backend/utils/adt/xml.c",
                 "xml_errorHandler(void *data, xmlErrorPtr error)",
                 "xml_errorHandler(void *data, const xmlError *error)"
