@@ -5,6 +5,11 @@ class PostgresqlAT94 < Formula
   sha256 "f5c014fc4a5c94e8cf11314cbadcade4d84213cfcc82081c9123e1b8847a20b9"
   license "PostgreSQL"
 
+  bottle do
+    root_url "https://github.com/eduardoteles17/homebrew-tap/releases/download/postgresql@9.4-9.4.26"
+    sha256 x86_64_linux: "851fcb8a0b8371da1266bc932c301d7eeb17fde72969ea1230e83dd97ae76823"
+  end
+
   keg_only :versioned_formula
 
   # https://www.postgresql.org/support/versioning/
