@@ -10,9 +10,11 @@ brew tap eduardoteles17/tap
 
 ## Available Formulae
 
-| Formula | Version | Description |
-|---------|---------|-------------|
-| `postgresql@9.6` | 9.6.24 | PostgreSQL 9.6, patched for modern toolchains (GCC 15, libxml2 >= 2.13) |
+| Formula | Version | Platforms | Description |
+|---------|---------|-----------|-------------|
+| `postgresql@9.6` | 9.6.24 | macOS (ARM), Linux (x64) | PostgreSQL 9.6, patched for modern toolchains |
+| `postgresql@9.5` | 9.5.25 | macOS (ARM), Linux (x64) | PostgreSQL 9.5, patched for modern toolchains |
+| `postgresql@9.4` | 9.4.26 | Linux (x64) | PostgreSQL 9.4, patched for modern toolchains |
 
 ### postgresql@9.6
 
@@ -20,18 +22,22 @@ brew tap eduardoteles17/tap
 brew install eduardoteles17/tap/postgresql@9.6
 ```
 
-Pre-built bottles available for:
+### postgresql@9.5
 
-| Platform | Architecture |
-|----------|-------------|
-| macOS Tahoe (26) | Apple Silicon |
-| macOS Sequoia (15) | Apple Silicon |
-| macOS Sonoma (14) | Apple Silicon |
-| Linux | x86_64 |
+```bash
+brew install eduardoteles17/tap/postgresql@9.5
+```
 
-All binaries include a `-9.6` suffix for side-by-side installation with other PostgreSQL versions:
+### postgresql@9.4 (Linux only)
+
+```bash
+brew install eduardoteles17/tap/postgresql@9.4
+```
+
+All binaries include a version suffix for side-by-side installation:
 
 ```bash
 psql-9.6 --version
-pg_dump-9.6 --version
+psql-9.5 --version
+psql-9.4 --version
 ```
