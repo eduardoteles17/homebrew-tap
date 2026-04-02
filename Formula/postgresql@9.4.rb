@@ -22,8 +22,8 @@ class PostgresqlAT94 < Formula
   depends_on "perl"
   depends_on "readline"
   depends_on "util-linux"
-  depends_on "zlib-ng-compat"
   depends_on :linux
+  depends_on "zlib-ng-compat"
 
   def install
     ENV.delete "PKG_CONFIG_LIBDIR"
