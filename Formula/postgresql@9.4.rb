@@ -16,12 +16,12 @@ class PostgresqlAT94 < Formula
   depends_on "libxcrypt"
   depends_on "libxml2"
   depends_on "libxslt"
+  depends_on :linux
   depends_on "linux-pam"
   depends_on "openldap"
   depends_on "openssl@3"
   depends_on "perl"
   depends_on "readline"
-  depends_on :linux
   depends_on "util-linux"
   depends_on "zlib-ng-compat"
 
