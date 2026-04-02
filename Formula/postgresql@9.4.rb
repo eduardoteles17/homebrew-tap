@@ -21,8 +21,8 @@ class PostgresqlAT94 < Formula
   depends_on "openssl@3"
   depends_on "perl"
   depends_on "readline"
-  depends_on "util-linux"
   depends_on :linux
+  depends_on "util-linux"
   depends_on "zlib-ng-compat"
 
   def install
