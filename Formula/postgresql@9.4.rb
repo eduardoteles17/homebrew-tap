@@ -10,27 +10,20 @@ class PostgresqlAT94 < Formula
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2020-02-13", because: :unsupported
 
+  depends_on :linux
   depends_on "pkgconf" => :build
 
-  # GSSAPI provided by Kerberos.framework crashes when forked.
-  # See https://github.com/Homebrew/homebrew-core/issues/47494.
   depends_on "krb5"
-
+  depends_on "libxcrypt"
+  depends_on "libxml2"
+  depends_on "libxslt"
+  depends_on "linux-pam"
+  depends_on "openldap"
   depends_on "openssl@3"
+  depends_on "perl"
   depends_on "readline"
-
-  uses_from_macos "libxml2"
-  uses_from_macos "libxslt"
-  uses_from_macos "openldap"
-  uses_from_macos "perl"
-  uses_from_macos "zlib"
-
-  on_linux do
-    depends_on "libxcrypt"
-    depends_on "linux-pam"
-    depends_on "util-linux"
-    depends_on "zlib-ng-compat"
-  end
+  depends_on "util-linux"
+  depends_on "zlib-ng-compat"
 
   def install
     ENV.delete "PKG_CONFIG_LIBDIR"
@@ -44,12 +37,9 @@ class PostgresqlAT94 < Formula
     ENV.append "CFLAGS", "-std=gnu89"
 
     # Homebrew's libxml2 >= 2.13 changed xmlStructuredErrorFunc to use const xmlError*.
-    # macOS system libxml2 still uses the old non-const signature.
-    unless OS.mac?
-      inreplace "src/backend/utils/adt/xml.c",
-                "xml_errorHandler(void *data, xmlErrorPtr error)",
-                "xml_errorHandler(void *data, const xmlError *error)"
-    end
+    inreplace "src/backend/utils/adt/xml.c",
+              "xml_errorHandler(void *data, xmlErrorPtr error)",
+              "xml_errorHandler(void *data, const xmlError *error)"
 
     # Modern OpenLDAP removed the separate ldap_r (thread-safe) library,
     # merging it into ldap.
@@ -73,17 +63,12 @@ class PostgresqlAT94 < Formula
       --with-perl
       --with-uuid=e2fs
     ]
-    args += %w[--with-bonjour --with-tcl] if OS.mac?
     args << "--with-extra-version= (#{tap.user})" if tap
-
-    # PostgreSQL by default uses xcodebuild internally to determine this,
-    # which does not work on CLT-only installs.
-    args << "PG_SYSROOT=#{MacOS.sdk_path}" if OS.mac?
 
     system "./configure", *args
 
-    # Switch from gnu89 (needed for configure) to gnu11 (needed for build on Linux)
-    ENV["CFLAGS"] = ENV["CFLAGS"].sub("-std=gnu89", "-std=gnu11") if OS.linux?
+    # Switch from gnu89 (needed for configure) to gnu11 (needed for build)
+    ENV["CFLAGS"] = ENV["CFLAGS"].sub("-std=gnu89", "-std=gnu11")
 
     # Work around busted path magic in Makefile.global.in. This can't be specified
     # in ./configure, but needs to be set here otherwise install prefixes containing
@@ -106,7 +91,6 @@ class PostgresqlAT94 < Formula
     %w[install-world-src-recurse install-world-contrib-recurse install-world-config-recurse].each do |target|
       system "make", target, *install_args
     end
-    return unless OS.linux?
 
     inreplace lib / "postgresql/pgxs/src/Makefile.global",
               "LD = #{Superenv.shims_path}/ld",
