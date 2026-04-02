@@ -37,12 +37,15 @@ class PostgresqlAT96 < Formula
 
     # PostgreSQL 9.6 predates C23 where `bool` became a keyword.
     # GCC 15+ defaults to C23, causing `typedef char bool` to fail.
-    ENV.append "CFLAGS", "-std=gnu11"
+    ENV.append "CFLAGS", "-std=gnu11" if OS.linux?
 
-    # Fix compatibility with libxml2 >= 2.13 (const xmlError* signature change)
-    inreplace "src/backend/utils/adt/xml.c",
-              "xml_errorHandler(void *data, xmlErrorPtr error)",
-              "xml_errorHandler(void *data, const xmlError *error)"
+    # Homebrew's libxml2 >= 2.13 changed xmlStructuredErrorFunc to use const xmlError*.
+    # macOS system libxml2 still uses the old non-const signature.
+    if !OS.mac?
+      inreplace "src/backend/utils/adt/xml.c",
+                "xml_errorHandler(void *data, xmlErrorPtr error)",
+                "xml_errorHandler(void *data, const xmlError *error)"
+    end
 
     args = %W[
       --disable-debug
