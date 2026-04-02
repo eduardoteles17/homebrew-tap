@@ -5,6 +5,14 @@ class PostgresqlAT96 < Formula
   sha256 "aeb7a196be3ebed1a7476ef565f39722187c108dd47da7489be9c4fcae982ace"
   license "PostgreSQL"
 
+  bottle do
+    root_url "https://github.com/eduardoteles17/homebrew-tap/releases/download/postgresql@9.6-9.6.24"
+    sha256 arm64_tahoe:   "a6789c8f03df20c377ae669bf20003a72f862879b0a7769d795d3bd3f3e9584e"
+    sha256 arm64_sequoia: "7f4e06afb4758d3c7e3341c9a50e82fbcf7bf6607381d7801d009da59a273c05"
+    sha256 arm64_sonoma:  "65939a47d740509264334b7f62aaab94a82dc8b10b8d7d27c65409f6d12bcc7a"
+    sha256 x86_64_linux:  "6de1b95052affa787b645f3169e0fde38fc2e58dd2c6d216bdf19dc118b2669f"
+  end
+
   keg_only :versioned_formula
 
   # https://www.postgresql.org/support/versioning/
