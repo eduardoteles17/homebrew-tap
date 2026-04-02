@@ -37,14 +37,11 @@ class PostgresqlAT94 < Formula
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@3"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@3"].opt_include} -I#{Formula["readline"].opt_include}"
 
-    # PostgreSQL 9.4 predates C23 where `bool` became a keyword.
-    # GCC 15+ defaults to C23, causing `typedef char bool` to fail.
-    # Use gnu89 for configure (its test programs use implicit int main),
-    # then switch to gnu11 for the actual build.
-    if OS.linux?
-      ENV.append "CFLAGS", "-std=gnu89"
-      @needs_std_switch = true
-    end
+    # PostgreSQL 9.4 configure tests use implicit int main(), which is
+    # invalid in C99+. Modern compilers (GCC 15 / Clang 16+) reject this.
+    # Use gnu89 for configure, then switch to gnu11 for the actual build
+    # (needed on Linux to avoid C23 `bool` keyword conflict).
+    ENV.append "CFLAGS", "-std=gnu89"
 
     # Homebrew's libxml2 >= 2.13 changed xmlStructuredErrorFunc to use const xmlError*.
     # macOS system libxml2 still uses the old non-const signature.
@@ -85,8 +82,8 @@ class PostgresqlAT94 < Formula
 
     system "./configure", *args
 
-    # Switch from gnu89 (needed for configure) to gnu11 (needed for build)
-    ENV["CFLAGS"] = ENV["CFLAGS"].sub("-std=gnu89", "-std=gnu11") if @needs_std_switch
+    # Switch from gnu89 (needed for configure) to gnu11 (needed for build on Linux)
+    ENV["CFLAGS"] = ENV["CFLAGS"].sub("-std=gnu89", "-std=gnu11") if OS.linux?
 
     # Work around busted path magic in Makefile.global.in. This can't be specified
     # in ./configure, but needs to be set here otherwise install prefixes containing
