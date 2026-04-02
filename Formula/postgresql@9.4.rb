@@ -10,7 +10,6 @@ class PostgresqlAT94 < Formula
   # https://www.postgresql.org/support/versioning/
   deprecate! date: "2020-02-13", because: :unsupported
 
-  depends_on :linux
   depends_on "pkgconf" => :build
 
   depends_on "krb5"
@@ -24,6 +23,7 @@ class PostgresqlAT94 < Formula
   depends_on "readline"
   depends_on "util-linux"
   depends_on "zlib-ng-compat"
+  depends_on :linux
 
   def install
     ENV.delete "PKG_CONFIG_LIBDIR"
