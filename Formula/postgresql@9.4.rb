@@ -37,14 +37,11 @@ class PostgresqlAT94 < Formula
     ENV.prepend "LDFLAGS", "-L#{Formula["openssl@3"].opt_lib} -L#{Formula["readline"].opt_lib}"
     ENV.prepend "CPPFLAGS", "-I#{Formula["openssl@3"].opt_include} -I#{Formula["readline"].opt_include}"
 
-    # PostgreSQL 9.4 configure tests use implicit int main() and call
-    # exit() without including <stdlib.h>. Modern compilers reject this:
-    # - GCC 15 defaults to C23 where `bool` is a keyword
-    # - Clang 16+ treats implicit-function-declaration as error
-    # Use gnu89 + suppress implicit-function-declaration for configure,
-    # then switch to gnu11 for the actual build on Linux.
+    # PostgreSQL 9.4 configure tests use implicit int main(), which is
+    # invalid in C99+. Modern compilers (GCC 15 / Clang 16+) reject this.
+    # Use gnu89 for configure, then switch to gnu11 for the actual build
+    # (needed on Linux to avoid C23 `bool` keyword conflict).
     ENV.append "CFLAGS", "-std=gnu89"
-    ENV.append "CFLAGS", "-Wno-error=implicit-function-declaration"
 
     # Homebrew's libxml2 >= 2.13 changed xmlStructuredErrorFunc to use const xmlError*.
     # macOS system libxml2 still uses the old non-const signature.
