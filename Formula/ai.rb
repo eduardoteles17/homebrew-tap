@@ -4,6 +4,14 @@ class Ai < Formula
   version "1.0.1"
   license "BSD-3-Clause"
 
+  bottle do
+    root_url "https://github.com/eduardoteles17/homebrew-tap/releases/download/ai-1.0.1"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "295c1093e66f3b3bbfd5c785af14e524e38deec29df3fed9cf6131e14e17270b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ae3c75f1bd6c416bcd7aa583c0bc7d6b6660b6b2410843b70e3fde05a05a23e8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5f4235d35250975706db8299445549d74a2b93c33f0068c7d5f325681a84954b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "12a3e6e5a34d1b02af3f0c0ada48ca1959b524d12758ede216d5cc80feed0ee5"
+  end
+
   on_macos do
     on_arm do
       url "https://github.com/eduardoteles17/ai/releases/download/v1.0.1/ai_1.0.1_darwin_arm64.tar.gz"
