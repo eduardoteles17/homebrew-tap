@@ -5,6 +5,14 @@ class TomcatAT9 < Formula
   sha256 "f74a0b061e2b0068ec2a17a5e01c250851f6f30f362c8127209a2a6ef7952b29"
   license "Apache-2.0"
 
+  bottle do
+    root_url "https://github.com/eduardoteles17/homebrew-tap/releases/download/tomcat@9-9.0.117"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "28533279a6b3aa6e50c4fb1a448cdd77bf802d47b819d7c848b809dc4f0aa3b8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c2006b37047601e30b93fd348b57c2ade8424040538c351d699f8ded11fa8c9d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "03fc8d877dd118bb8347ea8f2aff33149b4a871e3d4551f6d02a3dcdbade8300"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f1dd26554403e327190594449af614818114e7c9e39ccb3cabe001af08500aad"
+  end
+
   depends_on "openjdk@17"
 
   def install
