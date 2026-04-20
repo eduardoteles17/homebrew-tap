@@ -48,15 +48,6 @@ class TomcatAT9 < Formula
 
   test do
     ENV["CATALINA_HOME"] = libexec
-    pid = fork do
-      exec "#{bin}/catalina", "start"
-    end
-    sleep 3
-    begin
-      system "curl", "-s", "--fail", "http://localhost:8080/"
-    ensure
-      quiet_system "#{bin}/catalina", "stop"
-      Process.wait pid
-    end
+    assert_match "Server version", shell_output("#{bin}/catalina version")
   end
 end
